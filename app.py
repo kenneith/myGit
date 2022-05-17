@@ -52,11 +52,14 @@ def handle_message(event):
         'Cookie': '_culture=zh-TW'
         }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    try:
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-
-    # Send To Line
-    # reply = TextSendMessage(text=f"{get_message}")
-    reply = TextSendMessage(text=f"{response.text}")
-    line_bot_api.reply_message(event.reply_token, reply)
-
+        # Send To Line
+        # reply = TextSendMessage(text=f"{get_message}")
+        reply_message=response.text
+        reply = TextSendMessage(text=f"{reply_message}")
+        line_bot_api.reply_message(event.reply_token, reply)
+    except:
+        reply = TextSendMessage(text=f"{get_message}")
+        line_bot_api.reply_message(event.reply_token, reply)
